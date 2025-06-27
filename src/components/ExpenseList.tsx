@@ -4,6 +4,8 @@ import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
 import { toast } from "sonner";
 import { ExpenseForm } from "./ExpenseForm";
+import DataTable from "./expenseTable/DataTable";
+import { columnsDefs } from "./expenseTable/columns";
 
 export function ExpenseList() {
   const [search, setSearch] = useState("");
@@ -12,7 +14,9 @@ export function ExpenseList() {
   const [minAmount, setMinAmount] = useState("");
   const [maxAmount, setMaxAmount] = useState("");
   const [category, setCategory] = useState("");
-  const [sortBy, setSortBy] = useState<"date" | "amount" | "description">("date");
+  const [sortBy, setSortBy] = useState<"date" | "amount" | "description">(
+    "date"
+  );
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [editingExpense, setEditingExpense] = useState<any>(null);
 
@@ -70,7 +74,7 @@ export function ExpenseList() {
       {/* Filters */}
       <div className="card p-6">
         <h3 className="text-lg font-semibold mb-4">Filters & Search</h3>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
             <label className="text-sm font-medium mb-2 block">Search</label>
@@ -176,7 +180,9 @@ export function ExpenseList() {
       <div className="card p-6">
         <div className="flex justify-between items-center">
           <span className="text-sm font-medium">Total Expenses:</span>
-          <span className="text-2xl font-bold">{formatCurrency(totalAmount)}</span>
+          <span className="text-2xl font-bold">
+            {formatCurrency(totalAmount)}
+          </span>
         </div>
         <div className="text-sm text-muted-foreground mt-1">
           {expenses.length} expense{expenses.length !== 1 ? "s" : ""} found
@@ -184,7 +190,7 @@ export function ExpenseList() {
       </div>
 
       {/* Expenses List */}
-      <div className="space-y-3">
+      {/* <div className="space-y-3">
         {expenses.length === 0 ? (
           <div className="text-center py-12 text-muted-foreground">
             <p className="text-lg">No expenses found</p>
@@ -247,7 +253,8 @@ export function ExpenseList() {
             </div>
           ))
         )}
-      </div>
+      </div> */}
+      <DataTable data={expenses} columns={columnsDefs} />
 
       {/* Edit Expense Modal */}
       {editingExpense && (
