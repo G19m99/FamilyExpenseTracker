@@ -81,7 +81,7 @@ export const columnsDefs: ColumnDef<Expenses>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => {
+    cell: () => {
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
