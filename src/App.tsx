@@ -47,7 +47,7 @@ export default function App() {
     <div className="bg-background">
       <Authenticated>
         <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/60">
-          <div className="container flex h-16 items-center justify-between px-4">
+          <div className="flex h-16 items-center justify-between px-4">
             <div className="flex items-center space-x-2">
               <h1 className="text-xl font-bold">Family Expenses</h1>
             </div>
@@ -96,7 +96,7 @@ export default function App() {
           </div>
         </header>
       </Authenticated>
-      <main className="container mx-auto px-4 py-8 min-h-full h-[calc(100vh-65px)] overflow-y-auto">
+      <main className="mx-auto px-4 py-8 min-h-full h-[calc(100vh-65px)] overflow-y-auto">
         <Content />
       </main>
 
