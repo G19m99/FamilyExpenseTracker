@@ -1,9 +1,7 @@
 import {
   ColumnDef,
-  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
-  getFilteredRowModel,
   getGroupedRowModel,
   getPaginationRowModel,
   getSortedRowModel,
@@ -21,7 +19,6 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { Input } from "../ui/input";
 import {
   Table,
   TableBody,
@@ -43,7 +40,6 @@ const DataTable = <TData, TValue>({
   data,
 }: DataTableProps<TData, TValue>) => {
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [grouping, setGrouping] = useState<GroupingState>([]);
 
@@ -52,16 +48,14 @@ const DataTable = <TData, TValue>({
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    onColumnFiltersChange: setColumnFilters,
-    getFilteredRowModel: getFilteredRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     getGroupedRowModel: getGroupedRowModel(),
     onGroupingChange: setGrouping,
     onColumnVisibilityChange: setColumnVisibility,
+    manualFiltering: true,
     state: {
       sorting,
-      columnFilters,
       columnVisibility,
       grouping,
     },
@@ -69,14 +63,6 @@ const DataTable = <TData, TValue>({
   return (
     <div>
       <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter expenses..."
-          value={(table.getColumn("notes")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("notes")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="bg-transparent">

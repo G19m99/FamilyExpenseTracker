@@ -1,34 +1,33 @@
 import { useMutation, useQuery } from "convex/react";
 import { FunctionReturnType } from "convex/server";
-import { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
 import { ExpenseForm } from "./ExpenseForm";
-import DataTable from "./expenseTable/DataTable";
 import { createColumnsDefs } from "./expenseTable/columns";
+import DataFilters from "./expenseTable/DataFilters";
+import DataTable from "./expenseTable/DataTable";
+import { useFiltersQueryState } from "./expenseTable/useFiltersQueryState";
 
-type Expenses = FunctionReturnType<typeof api.expenses.getExpenses>[number];
+type Expense = FunctionReturnType<typeof api.expenses.getExpenses>[number];
+type Expenses = FunctionReturnType<typeof api.expenses.getExpenses>;
 
 export function ExpenseList() {
-  const [search, setSearch] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [minAmount, setMinAmount] = useState("");
-  const [maxAmount, setMaxAmount] = useState("");
-  const [category, setCategory] = useState("");
+  const { filters } = useFiltersQueryState();
+  const { search, startDate, endDate, minAmount, maxAmount, category } =
+    filters;
   const [editingExpense, setEditingExpense] = useState<any>(null);
 
   const expenses = useQuery(api.expenses.getExpenses, {
     search: search || undefined,
-    startDate: startDate || undefined,
-    endDate: endDate || undefined,
-    minAmount: minAmount ? parseFloat(minAmount) * 100 : undefined,
-    maxAmount: maxAmount ? parseFloat(maxAmount) * 100 : undefined,
+    startDate: startDate ? startDate.toISOString() : undefined,
+    endDate: endDate ? endDate.toISOString() : undefined,
+    minAmount: minAmount ? minAmount * 100 : undefined,
+    maxAmount: maxAmount ? maxAmount * 100 : undefined,
     category: category || undefined,
   });
 
-  const categories = useQuery(api.expenses.getExpenseCategories);
   const deleteExpense = useMutation(api.expenses.deleteExpense);
 
   const handleDelete = useCallback(
@@ -46,15 +45,40 @@ export function ExpenseList() {
   );
 
   const handleEdit = useCallback(
-    (expense: Expenses) => setEditingExpense(expense),
+    (expense: Expense) => setEditingExpense(expense),
     []
   );
 
-  const columns = useMemo(
-    () => createColumnsDefs(handleEdit, handleDelete),
-    [handleEdit, handleDelete]
+  return (
+    <div className="space-y-6">
+      <DataFilters />
+      <ExpensesView
+        expenses={expenses}
+        handleDelete={handleDelete}
+        handleEdit={handleEdit}
+      />
+      {editingExpense && (
+        <ExpenseForm
+          expense={editingExpense}
+          onClose={() => setEditingExpense(null)}
+          onSuccess={() => setEditingExpense(null)}
+        />
+      )}
+    </div>
   );
+}
 
+type ExpensesViewProps = {
+  expenses: Expenses | undefined;
+  handleEdit: (expense: Expense) => void;
+  handleDelete: (expenseId: Id<"expenses">) => Promise<void>;
+};
+
+const ExpensesView = ({
+  expenses,
+  handleDelete,
+  handleEdit,
+}: ExpensesViewProps) => {
   const formatCurrency = (cents: number) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -67,6 +91,11 @@ export function ExpenseList() {
     return expenses.reduce((sum, expense) => sum + expense.amount, 0);
   }, [expenses]);
 
+  const columns = useMemo(
+    () => createColumnsDefs(handleEdit, handleDelete),
+    [handleEdit, handleDelete]
+  );
+
   if (expenses === undefined) {
     return (
       <div className="flex justify-center items-center min-h-[200px]">
@@ -76,86 +105,7 @@ export function ExpenseList() {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Filters */}
-      <div className="card p-6">
-        <h3 className="text-lg font-semibold mb-4">Filters & Search</h3>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div>
-            <label className="text-sm font-medium mb-2 block">Search</label>
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search description or notes..."
-              className="input"
-            />
-          </div>
-
-          <div>
-            <label className="text-sm font-medium mb-2 block">Start Date</label>
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              className="input"
-            />
-          </div>
-
-          <div>
-            <label className="text-sm font-medium mb-2 block">End Date</label>
-            <input
-              type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              className="input"
-            />
-          </div>
-
-          <div>
-            <label className="text-sm font-medium mb-2 block">Min Amount</label>
-            <input
-              type="number"
-              step="0.01"
-              value={minAmount}
-              onChange={(e) => setMinAmount(e.target.value)}
-              placeholder="0.00"
-              className="input"
-            />
-          </div>
-
-          <div>
-            <label className="text-sm font-medium mb-2 block">Max Amount</label>
-            <input
-              type="number"
-              step="0.01"
-              value={maxAmount}
-              onChange={(e) => setMaxAmount(e.target.value)}
-              placeholder="0.00"
-              className="input"
-            />
-          </div>
-
-          <div>
-            <label className="text-sm font-medium mb-2 block">Category</label>
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="input"
-            >
-              <option value="">All categories</option>
-              {categories?.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-      </div>
-
-      {/* Summary */}
+    <React.Fragment>
       <div className="card p-6">
         <div className="flex justify-between items-center">
           <span className="text-sm font-medium">Total Expenses:</span>
@@ -168,14 +118,6 @@ export function ExpenseList() {
         </div>
       </div>
       <DataTable data={expenses} columns={columns} />
-      {/* Edit Expense Modal */}
-      {editingExpense && (
-        <ExpenseForm
-          expense={editingExpense}
-          onClose={() => setEditingExpense(null)}
-          onSuccess={() => setEditingExpense(null)}
-        />
-      )}
-    </div>
+    </React.Fragment>
   );
-}
+};
