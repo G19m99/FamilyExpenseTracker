@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
 import { useMutation, useQuery } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { useState } from "react";
 import { toast } from "sonner";
+import { api } from "../../convex/_generated/api";
 
 interface ExpenseFormProps {
   expense?: any;
@@ -83,7 +83,9 @@ export function ExpenseForm({ expense, onClose, onSuccess }: ExpenseFormProps) {
       }
       onSuccess();
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to save expense");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to save expense"
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -97,17 +99,24 @@ export function ExpenseForm({ expense, onClose, onSuccess }: ExpenseFormProps) {
             <h2 className="text-xl font-semibold">
               {expense ? "Edit Expense" : "Add Expense"}
             </h2>
-            <button
-              onClick={onClose}
-              className="btn-ghost h-8 w-8 p-0"
-            >
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <button onClick={onClose} className="btn-ghost h-8 w-8 p-0">
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={(e) => void handleSubmit(e)} className="space-y-4">
             <div>
               <label htmlFor="date" className="text-sm font-medium mb-2 block">
                 Date *
@@ -123,7 +132,10 @@ export function ExpenseForm({ expense, onClose, onSuccess }: ExpenseFormProps) {
             </div>
 
             <div>
-              <label htmlFor="description" className="text-sm font-medium mb-2 block">
+              <label
+                htmlFor="description"
+                className="text-sm font-medium mb-2 block"
+              >
                 Description *
               </label>
               <input
@@ -138,7 +150,10 @@ export function ExpenseForm({ expense, onClose, onSuccess }: ExpenseFormProps) {
             </div>
 
             <div>
-              <label htmlFor="amount" className="text-sm font-medium mb-2 block">
+              <label
+                htmlFor="amount"
+                className="text-sm font-medium mb-2 block"
+              >
                 Amount * ($)
               </label>
               <input
@@ -155,7 +170,10 @@ export function ExpenseForm({ expense, onClose, onSuccess }: ExpenseFormProps) {
             </div>
 
             <div>
-              <label htmlFor="category" className="text-sm font-medium mb-2 block">
+              <label
+                htmlFor="category"
+                className="text-sm font-medium mb-2 block"
+              >
                 Category
               </label>
               <select

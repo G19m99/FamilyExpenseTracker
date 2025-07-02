@@ -35,19 +35,28 @@ export function UserManagement() {
       toast.success("Invitation sent successfully");
       setInviteEmail("");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to send invitation");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to send invitation"
+      );
     } finally {
       setIsInviting(false);
     }
   };
 
-  const handleRemove = async (memberId: Id<"familyMembers">, userName: string) => {
-    if (confirm(`Are you sure you want to remove ${userName} from the family?`)) {
+  const handleRemove = async (
+    memberId: Id<"familyMembers">,
+    userName: string
+  ) => {
+    if (
+      confirm(`Are you sure you want to remove ${userName} from the family?`)
+    ) {
       try {
         await removeMember({ memberId });
         toast.success("Member removed successfully");
       } catch (error) {
-        toast.error(error instanceof Error ? error.message : "Failed to remove member");
+        toast.error(
+          error instanceof Error ? error.message : "Failed to remove member"
+        );
       }
     }
   };
@@ -69,8 +78,8 @@ export function UserManagement() {
       {/* Invite User */}
       <div className="card p-6">
         <h3 className="text-lg font-semibold mb-4">Invite New Member</h3>
-        
-        <form onSubmit={handleInvite} className="flex gap-3">
+
+        <form onSubmit={(e) => void handleInvite(e)} className="flex gap-3">
           <input
             type="email"
             value={inviteEmail}
@@ -94,7 +103,7 @@ export function UserManagement() {
         <div className="p-6 border-b">
           <h3 className="text-lg font-semibold">Family Members</h3>
         </div>
-        
+
         <div className="divide-y">
           {members.map((member) => (
             <div key={member._id} className="p-6">
@@ -118,18 +127,18 @@ export function UserManagement() {
                         member.status === "active"
                           ? "bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900"
                           : member.status === "invited"
-                          ? "bg-gray-600 text-white dark:bg-gray-400 dark:text-gray-900"
-                          : "bg-gray-400 text-white dark:bg-gray-600 dark:text-white"
+                            ? "bg-gray-600 text-white dark:bg-gray-400 dark:text-gray-900"
+                            : "bg-gray-400 text-white dark:bg-gray-600 dark:text-white"
                       }`}
                     >
                       {member.status}
                     </span>
                   </div>
-                  
+
                   <div className="text-sm text-muted-foreground mb-1">
                     {member.user?.email}
                   </div>
-                  
+
                   <div className="text-xs text-muted-foreground">
                     {member.status === "active" && member.joinedAt && (
                       <span>Joined {formatDate(member.joinedAt)}</span>
@@ -142,7 +151,12 @@ export function UserManagement() {
 
                 {member.status === "active" && member.role !== "admin" && (
                   <button
-                    onClick={() => handleRemove(member._id, member.user?.name || member.user?.email || "User")}
+                    onClick={() =>
+                      void handleRemove(
+                        member._id,
+                        member.user?.name || member.user?.email || "User"
+                      )
+                    }
                     className="btn-outline h-9 px-3 text-destructive hover:bg-destructive hover:text-destructive-foreground"
                   >
                     Remove

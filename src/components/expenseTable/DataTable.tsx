@@ -31,14 +31,14 @@ import {
   TableRow,
 } from "../ui/table";
 
-interface DataTableProps<TData extends any[], TValue> {
+interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
-  data: TData;
+  data: TData[];
   groupBy?: string;
   onGroupByChange?: (groupBy: string) => void;
 }
 
-const DataTable = <TData extends any[], TValue>({
+const DataTable = <TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) => {

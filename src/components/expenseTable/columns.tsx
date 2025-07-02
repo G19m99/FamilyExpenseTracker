@@ -1,6 +1,3 @@
-import { FunctionReturnType } from "convex/server";
-import { ColumnDef } from "@tanstack/react-table";
-import { api } from "../../../convex/_generated/api";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,12 +6,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "../ui/button";
+import { ColumnDef } from "@tanstack/react-table";
+import { FunctionReturnType } from "convex/server";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { api } from "../../../convex/_generated/api";
+import { Button } from "../ui/button";
+import { Id } from "../../../convex/_generated/dataModel";
 
-type Expenses = FunctionReturnType<typeof api.expenses.getExpenses>;
+type Expenses = FunctionReturnType<typeof api.expenses.getExpenses>[number];
 
-export const columnsDefs: ColumnDef<Expenses>[] = [
+export const createColumnsDefs = (
+  onEdit: (row: Expenses) => void,
+  onDelete: (expenseId: Id<"expenses">) => void
+): ColumnDef<Expenses>[] => [
   {
     accessorKey: "date",
     header: ({ column }) => {
@@ -81,7 +85,8 @@ export const columnsDefs: ColumnDef<Expenses>[] = [
   },
   {
     id: "actions",
-    cell: () => {
+    cell: ({ row }) => {
+      console.log("Actions cell for row:", row.original);
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -93,8 +98,12 @@ export const columnsDefs: ColumnDef<Expenses>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Edit</DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => onEdit(row.original)}>
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => onDelete(row.original._id)}>
+              Delete
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

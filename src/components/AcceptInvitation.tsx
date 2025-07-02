@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { useQuery, useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { useMutation, useQuery } from "convex/react";
+import { useState } from "react";
 import { toast } from "sonner";
+import { api } from "../../convex/_generated/api";
 import { SignInForm } from "../SignInForm";
 
 interface AcceptInvitationProps {
@@ -16,7 +16,7 @@ export function AcceptInvitation({ token }: AcceptInvitationProps) {
 
   const handleAccept = async () => {
     if (!loggedInUser) return;
-    
+
     setIsAccepting(true);
     try {
       await acceptInvitation({ token });
@@ -24,7 +24,9 @@ export function AcceptInvitation({ token }: AcceptInvitationProps) {
       // Clear the token from URL
       window.history.replaceState({}, document.title, "/");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to accept invitation");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to accept invitation"
+      );
     } finally {
       setIsAccepting(false);
     }
@@ -57,7 +59,8 @@ export function AcceptInvitation({ token }: AcceptInvitationProps) {
         <div className="text-center mb-6">
           <h2 className="text-2xl font-bold">Join {invitation.family?.name}</h2>
           <p className="text-muted-foreground mt-2">
-            You've been invited by {invitation.invitedBy?.name || invitation.invitedBy?.email}
+            You've been invited by{" "}
+            {invitation.invitedBy?.name || invitation.invitedBy?.email}
           </p>
           <p className="text-sm text-muted-foreground mt-1">
             Please sign in to accept this invitation
@@ -74,7 +77,8 @@ export function AcceptInvitation({ token }: AcceptInvitationProps) {
         <div className="card p-6 text-center">
           <h2 className="text-xl font-semibold mb-2">Wrong Account</h2>
           <p className="text-muted-foreground">
-            This invitation is for {invitation.email}, but you're signed in as {loggedInUser.email}.
+            This invitation is for {invitation.email}, but you're signed in as{" "}
+            {loggedInUser.email}.
           </p>
           <p className="text-sm text-muted-foreground mt-2">
             Please sign in with the correct account or ask for a new invitation.
@@ -87,12 +91,16 @@ export function AcceptInvitation({ token }: AcceptInvitationProps) {
   return (
     <div className="max-w-md mx-auto mt-8">
       <div className="card p-6 text-center">
-        <h2 className="text-2xl font-bold mb-4">Join {invitation.family?.name}</h2>
+        <h2 className="text-2xl font-bold mb-4">
+          Join {invitation.family?.name}
+        </h2>
         <p className="text-muted-foreground mb-6">
-          You've been invited by {invitation.invitedBy?.name || invitation.invitedBy?.email} to join their family expense tracker.
+          You've been invited by{" "}
+          {invitation.invitedBy?.name || invitation.invitedBy?.email} to join
+          their family expense tracker.
         </p>
         <button
-          onClick={handleAccept}
+          onClick={() => void handleAccept()}
           disabled={isAccepting}
           className="btn-primary h-10 px-4 py-2 w-full"
         >

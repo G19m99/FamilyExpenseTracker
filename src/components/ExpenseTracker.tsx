@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { useQuery } from "convex/react";
-import { api } from "../../convex/_generated/api";
-import { ExpenseList } from "./ExpenseList";
 import { ExpenseForm } from "./ExpenseForm";
+import { ExpenseList } from "./ExpenseList";
 import { UserManagement } from "./UserManagement";
+import { cn } from "@/lib/utils";
 
 interface ExpenseTrackerProps {
   family: {
@@ -28,7 +27,7 @@ export function ExpenseTracker({ family }: ExpenseTrackerProps) {
             Track and manage your family expenses
           </p>
         </div>
-        
+
         {activeTab === "expenses" && (
           <button
             onClick={() => setShowExpenseForm(true)}
@@ -40,7 +39,7 @@ export function ExpenseTracker({ family }: ExpenseTrackerProps) {
       </div>
 
       {/* Tabs */}
-      <div className="border-b">
+      <div className={cn("border-b", !isAdmin && "hidden")}>
         <nav className="-mb-px flex space-x-8">
           <button
             onClick={() => setActiveTab("expenses")}
@@ -68,13 +67,9 @@ export function ExpenseTracker({ family }: ExpenseTrackerProps) {
       </div>
 
       {/* Content */}
-      {activeTab === "expenses" && (
-        <ExpenseList />
-      )}
-      
-      {activeTab === "users" && isAdmin && (
-        <UserManagement />
-      )}
+      {activeTab === "expenses" && <ExpenseList />}
+
+      {activeTab === "users" && isAdmin && <UserManagement />}
 
       {/* Expense Form Modal */}
       {showExpenseForm && (
