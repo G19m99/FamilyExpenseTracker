@@ -14,10 +14,12 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as auth from "../auth.js";
+import type * as expenseCategories from "../expenseCategories.js";
 import type * as expenses from "../expenses.js";
 import type * as families from "../families.js";
 import type * as http from "../http.js";
 import type * as invitations from "../invitations.js";
+import type * as lib_family from "../lib/family.js";
 import type * as router from "../router.js";
 
 /**
@@ -30,10 +32,12 @@ import type * as router from "../router.js";
  */
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
+  expenseCategories: typeof expenseCategories;
   expenses: typeof expenses;
   families: typeof families;
   http: typeof http;
   invitations: typeof invitations;
+  "lib/family": typeof lib_family;
   router: typeof router;
 }>;
 export declare const api: FilterApi<

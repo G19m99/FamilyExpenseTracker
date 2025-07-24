@@ -6,7 +6,7 @@ import { Label } from "../ui/label";
 import { useFiltersQueryState } from "./useFiltersQueryState";
 
 const DataFilters = () => {
-  const categories = useQuery(api.expenses.getExpenseCategories);
+  const categories = useQuery(api.expenseCategories.getExpenseCategories);
   const { filters, setFilters } = useFiltersQueryState();
   const { search, startDate, endDate, minAmount, maxAmount, category } =
     filters;

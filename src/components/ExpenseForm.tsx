@@ -21,29 +21,13 @@ export function ExpenseForm({ expense, onClose, onSuccess }: ExpenseFormProps) {
   const [category, setCategory] = useState(expense?.category || "");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const categories = useQuery(api.expenses.getExpenseCategories);
+  const categories = useQuery(api.expenseCategories.getExpenseCategories);
   const createExpense = useMutation(api.expenses.createExpense);
   const updateExpense = useMutation(api.expenses.updateExpense);
 
-  const commonCategories = [
-    "Food & Dining",
-    "Groceries",
-    "Transportation",
-    "Utilities",
-    "Healthcare",
-    "Entertainment",
-    "Shopping",
-    "Education",
-    "Travel",
-    "Home & Garden",
-    "Personal Care",
-    "Insurance",
-    "Other",
-  ];
-
-  const allCategories = Array.from(
-    new Set([...commonCategories, ...(categories || [])])
-  ).sort();
+  // const allCategories = Array.from(
+  //   new Set([...commonCategories, ...(categories || [])])
+  // ).sort();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -183,7 +167,7 @@ export function ExpenseForm({ expense, onClose, onSuccess }: ExpenseFormProps) {
                 className="input"
               >
                 <option value="">Select category</option>
-                {allCategories.map((cat) => (
+                {categories?.map((cat) => (
                   <option key={cat} value={cat}>
                     {cat}
                   </option>
