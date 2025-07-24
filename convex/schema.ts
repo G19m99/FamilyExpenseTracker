@@ -13,7 +13,11 @@ const applicationTables = {
     familyId: v.id("families"),
     userId: v.id("users"),
     role: v.union(v.literal("admin"), v.literal("member")),
-    status: v.union(v.literal("active"), v.literal("invited"), v.literal("removed")),
+    status: v.union(
+      v.literal("active"),
+      v.literal("invited"),
+      v.literal("removed")
+    ),
     invitedBy: v.optional(v.id("users")),
     invitedAt: v.optional(v.number()),
     joinedAt: v.optional(v.number()),
@@ -43,12 +47,24 @@ const applicationTables = {
     invitedBy: v.id("users"),
     token: v.string(),
     expiresAt: v.number(),
-    status: v.union(v.literal("pending"), v.literal("accepted"), v.literal("expired")),
+    status: v.union(
+      v.literal("pending"),
+      v.literal("accepted"),
+      v.literal("expired")
+    ),
     createdAt: v.number(),
   })
     .index("by_token", ["token"])
     .index("by_email", ["email"])
     .index("by_family", ["familyId"]),
+  categories: defineTable({
+    name: v.string(),
+    familyId: v.id("families"),
+    createdBy: v.id("users"),
+    createdAt: v.number(),
+  })
+    .index("by_family", ["familyId"])
+    .index("by_name_and_family", ["name", "familyId"]),
 };
 
 export default defineSchema({

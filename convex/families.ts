@@ -1,6 +1,7 @@
-import { v } from "convex/values";
-import { query, mutation } from "./_generated/server";
 import { getAuthUserId } from "@convex-dev/auth/server";
+import { v } from "convex/values";
+import { api } from "./_generated/api";
+import { mutation, query } from "./_generated/server";
 
 export const getCurrentUserFamily = query({
   args: {},
@@ -78,6 +79,12 @@ export const createFamily = mutation({
       }
     }
 
+    await ctx.runMutation(
+      api.expenseCategories.createInitialExpenseCategories,
+      {
+        familyId,
+      }
+    );
     return familyId;
   },
 });
@@ -139,7 +146,7 @@ export const inviteUser = mutation({
     const existingInvitation = await ctx.db
       .query("invitations")
       .withIndex("by_email", (q) => q.eq("email", email))
-      .filter((q) => 
+      .filter((q) =>
         q.and(
           q.eq(q.field("familyId"), userMembership.familyId),
           q.eq(q.field("status"), "pending")
@@ -185,7 +192,10 @@ export const removeMember = mutation({
     }
 
     const memberToRemove = await ctx.db.get(args.memberId);
-    if (!memberToRemove || memberToRemove.familyId !== userMembership.familyId) {
+    if (
+      !memberToRemove ||
+      memberToRemove.familyId !== userMembership.familyId
+    ) {
       throw new Error("Member not found");
     }
 

@@ -1,20 +1,6 @@
 import { v } from "convex/values";
-import { query, mutation } from "./_generated/server";
-import { getAuthUserId } from "@convex-dev/auth/server";
-
-async function getUserFamilyId(ctx: any) {
-  const userId = await getAuthUserId(ctx);
-  if (!userId) throw new Error("Not authenticated");
-
-  const membership = await ctx.db
-    .query("familyMembers")
-    .withIndex("by_user", (q: any) => q.eq("userId", userId))
-    .filter((q: any) => q.eq(q.field("status"), "active"))
-    .first();
-
-  if (!membership) throw new Error("Not a family member");
-  return { userId, familyId: membership.familyId };
-}
+import { mutation, query } from "./_generated/server";
+import { getUserFamilyId } from "./lib/family";
 
 export const getExpenses = query({
   args: {
@@ -24,7 +10,9 @@ export const getExpenses = query({
     minAmount: v.optional(v.number()),
     maxAmount: v.optional(v.number()),
     category: v.optional(v.string()),
-    sortBy: v.optional(v.union(v.literal("date"), v.literal("amount"), v.literal("description"))),
+    sortBy: v.optional(
+      v.union(v.literal("date"), v.literal("amount"), v.literal("description"))
+    ),
     sortOrder: v.optional(v.union(v.literal("asc"), v.literal("desc"))),
   },
   handler: async (ctx, args) => {
@@ -63,15 +51,21 @@ export const getExpenses = query({
     }
 
     if (args.minAmount !== undefined) {
-      expenses = expenses.filter((expense) => expense.amount >= args.minAmount!);
+      expenses = expenses.filter(
+        (expense) => expense.amount >= args.minAmount!
+      );
     }
 
     if (args.maxAmount !== undefined) {
-      expenses = expenses.filter((expense) => expense.amount <= args.maxAmount!);
+      expenses = expenses.filter(
+        (expense) => expense.amount <= args.maxAmount!
+      );
     }
 
     if (args.category) {
-      expenses = expenses.filter((expense) => expense.category === args.category);
+      expenses = expenses.filter(
+        (expense) => expense.category === args.category
+      );
     }
 
     // Apply sorting
@@ -80,7 +74,7 @@ export const getExpenses = query({
 
     expenses.sort((a, b) => {
       let aVal: any, bVal: any;
-      
+
       switch (sortBy) {
         case "date":
           aVal = a.date;
@@ -166,7 +160,7 @@ export const updateExpense = mutation({
     category: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    const { userId, familyId } = await getUserFamilyId(ctx);
+    const { familyId } = await getUserFamilyId(ctx);
 
     const expense = await ctx.db.get(args.expenseId);
     if (!expense || expense.familyId !== familyId) {
@@ -197,7 +191,7 @@ export const deleteExpense = mutation({
     expenseId: v.id("expenses"),
   },
   handler: async (ctx, args) => {
-    const { userId, familyId } = await getUserFamilyId(ctx);
+    const { familyId } = await getUserFamilyId(ctx);
 
     const expense = await ctx.db.get(args.expenseId);
     if (!expense || expense.familyId !== familyId) {
