@@ -1,6 +1,6 @@
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { v } from "convex/values";
-import { api } from "./_generated/api";
+import { api, internal } from "./_generated/api";
 import { mutation, query } from "./_generated/server";
 
 export const getCurrentUserFamily = query({
@@ -167,6 +167,16 @@ export const inviteUser = mutation({
       expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 days
       status: "pending",
       createdAt: Date.now(),
+    });
+
+    //TODO: Send email here
+    await ctx.scheduler.runAfter(0, internal.sendInviteEmail.sendInviteEmail, {
+      recipientName: email.split("@")[0],
+      senderName: userMembership.userId, //TODO: fix and change to users name
+      familyName: userMembership.familyId, //TODO: fix and change to family name
+      inviteCode: token,
+      inviteUrl: `https://yourapp.com/invite/accept?code=${token}`,
+      expiryDays: 7,
     });
 
     return token;

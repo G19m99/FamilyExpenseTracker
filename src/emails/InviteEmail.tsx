@@ -8,10 +8,10 @@ import {
   Link,
   Preview,
   Section,
-  Text,
   Tailwind,
+  Text,
 } from "@react-email/components";
-import { Wallet } from "lucide-react";
+import { Mail, Users, Wallet } from "lucide-react";
 
 interface InviteEmailProps {
   recipientName?: string;
@@ -40,7 +40,7 @@ export const InviteEmail = ({
         <Body className="bg-black font-sans">
           <Container className="mx-auto max-w-2xl bg-black">
             {/* Light Header Section - App Branding Only */}
-            <Section className="bg-gray-50 px-8 py-8 rounded-t-2xl">
+            <Section className="bg-gray-50 px-8 py-8 rounded-t-2xl w-full">
               <div className="text-center">
                 <div className="mx-auto w-16 h-16 bg-black rounded-full flex items-center justify-center mb-4">
                   <Text className="text-2xl m-0">
@@ -75,7 +75,9 @@ export const InviteEmail = ({
               <div className="bg-gray-800 rounded-2xl p-8 text-center mb-8">
                 {/* Users Icon */}
                 <div className="mx-auto w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center mb-6">
-                  <Text className="text-xl m-0">👥</Text>
+                  <Text className="text-xl m-0">
+                    <Users className="h-8 w-8" />
+                  </Text>
                 </div>
 
                 <Text className="text-gray-300 text-base m-0 mb-2">
@@ -151,8 +153,8 @@ export const InviteEmail = ({
                 </Link>
               </Text>
               <Text className="text-gray-500 text-sm m-0 mb-4">
-                📧 FamilyTracker, Inc. • 123 Finance Street • San Francisco, CA
-                94107
+                <Mail className="h-3 w-3" /> FamilyTracker, Inc. • 17 Shefa
+                Chaim Ave • Lakewood, NJ 08701
               </Text>
               <Text className="text-gray-500 text-xs m-0">
                 <Link
