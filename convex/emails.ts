@@ -22,6 +22,8 @@ export const sendInviteEmail = internalAction({
     expiryDays: v.number(),
   },
   handler: async (ctx, args) => {
+    //add logging
+    console.log("Sending invite email to:", args.recipientEmail);
     const emailHtml = await render(
       InviteEmail({
         recipientName: args.recipientEmail,
@@ -33,11 +35,12 @@ export const sendInviteEmail = internalAction({
       })
     );
 
-    await resend.sendEmail(ctx, {
+    const id = await resend.sendEmail(ctx, {
       from: "Support <support@support.surplustonerinc.com>",
       to: args.recipientEmail,
       subject: `${args.senderName} invited you to join ${args.familyName} on FamilyTracker`,
       html: emailHtml,
     });
+    console.log("Email sent with ID:", id);
   },
 });
