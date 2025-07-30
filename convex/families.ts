@@ -1,7 +1,56 @@
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { v } from "convex/values";
 import { api, internal } from "./_generated/api";
-import { mutation, query } from "./_generated/server";
+import { internalMutation, mutation, query } from "./_generated/server";
+
+export const _sendInviteInternal = internalMutation({
+  args: {
+    familyId: v.id("families"),
+    email: v.string(),
+    invitedBy: v.id("users"),
+    familyName: v.optional(v.string()),
+    senderName: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const email = args.email.trim().toLowerCase();
+
+    const existingInvitation = await ctx.db
+      .query("invitations")
+      .withIndex("by_email", (q) => q.eq("email", email))
+      .filter((q) =>
+        q.and(
+          q.eq(q.field("familyId"), args.familyId),
+          q.eq(q.field("status"), "pending")
+        )
+      )
+      .first();
+
+    const token = crypto.randomUUID();
+    if (!existingInvitation) {
+      await ctx.db.insert("invitations", {
+        familyId: args.familyId,
+        email,
+        invitedBy: args.invitedBy,
+        token,
+        expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 days
+        status: "pending",
+        createdAt: Date.now(),
+      });
+    }
+
+    // Schedule the invite email to be sent
+    await ctx.scheduler.runAfter(0, internal.emails.sendInviteEmail, {
+      recipientEmail: email,
+      senderName: args.senderName || "",
+      familyName: args.familyName || "Family",
+      inviteCode: token,
+      inviteUrl: `https://family-expense-tracker.netlify.app?code=${token}`,
+      expiryDays: 7,
+    });
+
+    return token;
+  },
+});
 
 export const getCurrentUserFamily = query({
   args: {},
@@ -63,21 +112,30 @@ export const createFamily = mutation({
       joinedAt: Date.now(),
     });
 
+    // Get creator's info for invite emails
+    const creator = await ctx.db.get(userId);
+    if (!creator) throw new Error("Creator user not found");
+
     // Create invitations for provided emails
-    for (const email of args.inviteEmails) {
-      if (email.trim()) {
-        const token = crypto.randomUUID();
-        await ctx.db.insert("invitations", {
-          familyId,
-          email: email.trim().toLowerCase(),
-          invitedBy: userId,
-          token,
-          expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 days
-          status: "pending",
-          createdAt: Date.now(),
-        });
-      }
-    }
+    const validEmails = args.inviteEmails.filter((email) => email.trim());
+
+    // Send invites in parallel for better performance
+    await Promise.all(
+      validEmails.map(async (email) => {
+        try {
+          await ctx.runMutation(internal.families._sendInviteInternal, {
+            familyId,
+            email,
+            invitedBy: userId,
+            familyName: args.name,
+            senderName: creator.name || creator.email || "",
+          });
+        } catch (error) {
+          // Log the error but continue with other invites
+          console.error(`Failed to send invite to ${email}:`, error);
+        }
+      })
+    );
 
     await ctx.runMutation(
       api.expenseCategories.createInitialExpenseCategories,
@@ -126,7 +184,7 @@ export const inviteUser = mutation({
   args: {
     email: v.string(),
   },
-  handler: async (ctx, args) => {
+  handler: async (ctx, args): Promise<string> => {
     const userId = await getAuthUserId(ctx);
     if (!userId) throw new Error("Not authenticated");
 
@@ -140,46 +198,20 @@ export const inviteUser = mutation({
       throw new Error("Only family admins can invite users");
     }
 
-    const email = args.email.trim().toLowerCase();
+    const family = await ctx.db.get(userMembership.familyId);
+    const invitingMember = await ctx.db.get(userMembership.userId);
 
-    // Check if user is already invited or member
-    const existingInvitation = await ctx.db
-      .query("invitations")
-      .withIndex("by_email", (q) => q.eq("email", email))
-      .filter((q) =>
-        q.and(
-          q.eq(q.field("familyId"), userMembership.familyId),
-          q.eq(q.field("status"), "pending")
-        )
-      )
-      .first();
-
-    if (existingInvitation) {
-      throw new Error("User already invited");
+    if (!family || !invitingMember) {
+      throw new Error("Family or inviting member not found");
     }
 
-    const token = crypto.randomUUID();
-    await ctx.db.insert("invitations", {
+    return await ctx.runMutation(internal.families._sendInviteInternal, {
       familyId: userMembership.familyId,
-      email,
+      email: args.email,
       invitedBy: userId,
-      token,
-      expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 days
-      status: "pending",
-      createdAt: Date.now(),
+      familyName: family.name,
+      senderName: invitingMember.name || invitingMember.email || "",
     });
-
-    //TODO: Send email here
-    await ctx.scheduler.runAfter(0, internal.sendInviteEmail.sendInviteEmail, {
-      recipientName: email.split("@")[0],
-      senderName: userMembership.userId, //TODO: fix and change to users name
-      familyName: userMembership.familyId, //TODO: fix and change to family name
-      inviteCode: token,
-      inviteUrl: `https://yourapp.com/invite/accept?code=${token}`,
-      expiryDays: 7,
-    });
-
-    return token;
   },
 });
 

@@ -1,3 +1,5 @@
+"use node";
+
 import { Resend } from "@convex-dev/resend";
 import { render } from "@react-email/render";
 import { v } from "convex/values";
@@ -5,15 +7,14 @@ import InviteEmail from "../src/emails/InviteEmail";
 import { components } from "./_generated/api";
 import { internalAction } from "./_generated/server";
 
-export const resend: Resend = new Resend(components.resend, {});
-
-export const fakeActions = internalAction({
-  handler: (ctx) => console.log("Hello from actions"),
+export const resend: Resend = new Resend(components.resend, {
+  testMode: false,
 });
 
 export const sendInviteEmail = internalAction({
   args: {
-    recipientName: v.optional(v.string()),
+    //recipientName: v.optional(v.string()),
+    recipientEmail: v.string(),
     senderName: v.string(),
     familyName: v.string(),
     inviteCode: v.string(),
@@ -23,7 +24,7 @@ export const sendInviteEmail = internalAction({
   handler: async (ctx, args) => {
     const emailHtml = await render(
       InviteEmail({
-        recipientName: args.recipientName,
+        recipientName: args.recipientEmail,
         senderName: args.senderName,
         familyName: args.familyName,
         inviteCode: args.inviteCode,
@@ -31,10 +32,11 @@ export const sendInviteEmail = internalAction({
         expiryDays: args.expiryDays,
       })
     );
+
     await resend.sendEmail(ctx, {
-      from: "Me <me@support.surplustonerinc.com>",
-      to: "gershymenzer@gmail.com",
-      subject: "Hi there",
+      from: "Support <support@support.surplustonerinc.com>",
+      to: args.recipientEmail,
+      subject: `${args.senderName} invited you to join ${args.familyName} on FamilyTracker`,
       html: emailHtml,
     });
   },

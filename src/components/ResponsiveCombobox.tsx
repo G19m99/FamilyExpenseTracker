@@ -39,7 +39,7 @@ export function ComboBoxResponsive({
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[350px] p-0" align="start">
-          <StatusList
+          <CategoriesList
             options={options}
             setOpen={setOpen}
             setselectedOption={setSelectedOption}
@@ -53,12 +53,12 @@ export function ComboBoxResponsive({
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button variant="outline" className="w-full justify-start">
-          {selectedOption ? <>{selectedOption}</> : <>+ Set status</>}
+          {selectedOption ? <>{selectedOption}</> : <>+ Set categories</>}
         </Button>
       </DrawerTrigger>
       <DrawerContent>
         <div className="mt-4 border-t">
-          <StatusList
+          <CategoriesList
             options={options}
             setOpen={setOpen}
             setselectedOption={setSelectedOption}
@@ -69,7 +69,7 @@ export function ComboBoxResponsive({
   );
 }
 
-function StatusList({
+function CategoriesList({
   options,
   setOpen,
   setselectedOption,
@@ -80,7 +80,7 @@ function StatusList({
 }) {
   return (
     <Command>
-      <CommandInput placeholder="Filter status..." />
+      <CommandInput placeholder="Filter categories..." />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup>

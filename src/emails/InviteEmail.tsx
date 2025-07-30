@@ -11,7 +11,7 @@ import {
   Tailwind,
   Text,
 } from "@react-email/components";
-import { Mail, Users, Wallet } from "lucide-react";
+import { Mail } from "lucide-react";
 
 interface InviteEmailProps {
   recipientName?: string;
@@ -44,7 +44,21 @@ export const InviteEmail = ({
               <div className="text-center">
                 <div className="mx-auto w-16 h-16 bg-black rounded-full flex items-center justify-center mb-4">
                   <Text className="text-2xl m-0">
-                    <Wallet className="h-8 w-8 text-white" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      className="lucide lucide-wallet-icon lucide-wallet h-8 w-8 text-white"
+                    >
+                      <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1" />
+                      <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" />
+                    </svg>
                   </Text>
                 </div>
                 <Heading className="text-2xl font-bold text-black m-0 mb-2">
@@ -76,7 +90,23 @@ export const InviteEmail = ({
                 {/* Users Icon */}
                 <div className="mx-auto w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center mb-6">
                   <Text className="text-xl m-0">
-                    <Users className="h-8 w-8" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      className="lucide lucide-users-icon lucide-users h-8 w-8"
+                    >
+                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                      <path d="M16 3.128a4 4 0 0 1 0 7.744" />
+                      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                      <circle cx="9" cy="7" r="4" />
+                    </svg>
                   </Text>
                 </div>
 
@@ -153,8 +183,22 @@ export const InviteEmail = ({
                 </Link>
               </Text>
               <Text className="text-gray-500 text-sm m-0 mb-4">
-                <Mail className="h-3 w-3" /> FamilyTracker, Inc. • 17 Shefa
-                Chaim Ave • Lakewood, NJ 08701
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  className="lucide lucide-mail-icon lucide-mail h-3 w-3"
+                >
+                  <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" />
+                  <rect x="2" y="4" width="20" height="16" rx="2" />
+                </svg>{" "}
+                FamilyTracker, Inc. • 17 Shefa Chaim Ave • Lakewood, NJ 08701
               </Text>
               <Text className="text-gray-500 text-xs m-0">
                 <Link

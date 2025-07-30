@@ -9,6 +9,7 @@
  */
 
 import type * as auth from "../auth.js";
+import type * as emails from "../emails.js";
 import type * as expenseCategories from "../expenseCategories.js";
 import type * as expenses from "../expenses.js";
 import type * as families from "../families.js";
@@ -16,7 +17,6 @@ import type * as http from "../http.js";
 import type * as invitations from "../invitations.js";
 import type * as lib_family from "../lib/family.js";
 import type * as router from "../router.js";
-import type * as sendInviteEmail from "../sendInviteEmail.js";
 
 import type {
   ApiFromModules,
@@ -34,6 +34,7 @@ import type {
  */
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
+  emails: typeof emails;
   expenseCategories: typeof expenseCategories;
   expenses: typeof expenses;
   families: typeof families;
@@ -41,7 +42,6 @@ declare const fullApi: ApiFromModules<{
   invitations: typeof invitations;
   "lib/family": typeof lib_family;
   router: typeof router;
-  sendInviteEmail: typeof sendInviteEmail;
 }>;
 declare const fullApiWithMounts: typeof fullApi;
 
