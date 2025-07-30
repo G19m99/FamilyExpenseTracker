@@ -10,13 +10,18 @@ export const getInvitationByToken = query({
       .withIndex("by_token", (q) => q.eq("token", args.token))
       .first();
 
-    if (!invitation || invitation.status !== "pending" || invitation.expiresAt < Date.now()) {
+    console.log("Fetching invitation by token:", args.token, invitation);
+    if (
+      !invitation ||
+      invitation.status !== "pending" ||
+      invitation.expiresAt < Date.now()
+    ) {
       return null;
     }
 
     const family = await ctx.db.get(invitation.familyId);
     const invitedBy = await ctx.db.get(invitation.invitedBy);
-
+    console.log("Family and invitedBy fetched:", family, invitedBy);
     return {
       ...invitation,
       family,
@@ -39,7 +44,11 @@ export const acceptInvitation = mutation({
       .withIndex("by_token", (q) => q.eq("token", args.token))
       .first();
 
-    if (!invitation || invitation.status !== "pending" || invitation.expiresAt < Date.now()) {
+    if (
+      !invitation ||
+      invitation.status !== "pending" ||
+      invitation.expiresAt < Date.now()
+    ) {
       throw new Error("Invalid or expired invitation");
     }
 
