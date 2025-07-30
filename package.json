@@ -8,7 +8,7 @@
     "dev:frontend": "vite --open",
     "dev:backend": "convex dev",
     "lint": "tsc -p convex -noEmit --pretty false && tsc -p . -noEmit --pretty false && convex dev --once && vite build",
-    "build": "tsc -b && vite build",
+    "build": "convex codegen && tsc -b && vite build",
     "email": "email dev --dir src/emails"
   },
   "dependencies": {
