@@ -1,12 +1,11 @@
 # Family Expense Tracker SaaS Application
   
-This is a project built with [Chef](https://chef.convex.dev) using [Convex](https://convex.dev) as its backend.
-  
-This project is connected to the Convex deployment named [`sensible-blackbird-692`](https://dashboard.convex.dev/d/sensible-blackbird-692).
+This is a project built with using [Convex](https://convex.dev) as its backend and [Resend](http://resend.com/) through the [Convex Resend Component](https://www.convex.dev/components/resend).
+
   
 ## Project structure
   
-The frontend code is in the `app` directory and is built with [Vite](https://vitejs.dev/).
+The frontend code is in the `src` directory and is built with [Vite](https://vitejs.dev/).
   
 The backend code is in the `convex` directory.
   
@@ -14,7 +13,7 @@ The backend code is in the `convex` directory.
 
 ## App authentication
 
-Chef apps use [Convex Auth](https://auth.convex.dev/) with Anonymous auth for easy sign in. You may wish to change this before deploying your app.
+App uses [Convex Auth](https://auth.convex.dev/) with the google provider for easy authentication
 
 ## Developing and deploying your app
 
