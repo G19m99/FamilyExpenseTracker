@@ -32,7 +32,7 @@ export default function App() {
 
   // Check for invitation token in URL
   const urlParams = new URLSearchParams(window.location.search);
-  const invitationToken = urlParams.get("code");
+  const invitationToken = urlParams.get("invite-token");
 
   if (invitationToken) {
     return (

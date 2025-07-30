@@ -44,7 +44,7 @@ export const _sendInviteInternal = internalMutation({
       senderName: args.senderName || "",
       familyName: args.familyName || "Family",
       inviteCode: token,
-      inviteUrl: `https://family-expense-tracker.netlify.app?code=${token}`,
+      inviteUrl: `https://family-expense-tracker.netlify.app?invite-token=${token}`,
       expiryDays: 7,
     });
 

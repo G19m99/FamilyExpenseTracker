@@ -11,7 +11,6 @@ import {
   Tailwind,
   Text,
 } from "@react-email/components";
-import { Mail } from "lucide-react";
 
 interface InviteEmailProps {
   recipientName?: string;
@@ -23,11 +22,11 @@ interface InviteEmailProps {
 }
 
 export const InviteEmail = ({
-  recipientName = "Jane Smith",
-  senderName = "John Smith",
-  familyName = "The Smith Family",
-  inviteCode = "SMITH-123456",
-  inviteUrl = "https://familytracker.com/invite/accept?code=SMITH-123456",
+  recipientName,
+  senderName,
+  familyName,
+  inviteCode,
+  inviteUrl,
   expiryDays = 7,
 }: InviteEmailProps) => {
   const previewText = `${senderName} invited you to join ${familyName} on FamilyTracker`;
