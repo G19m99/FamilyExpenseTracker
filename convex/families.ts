@@ -25,8 +25,8 @@ export const _sendInviteInternal = internalMutation({
       )
       .first();
 
-    const token = crypto.randomUUID();
     if (!existingInvitation) {
+      const token = crypto.randomUUID();
       await ctx.db.insert("invitations", {
         familyId: args.familyId,
         email,
@@ -36,19 +36,27 @@ export const _sendInviteInternal = internalMutation({
         status: "pending",
         createdAt: Date.now(),
       });
+
+      await ctx.scheduler.runAfter(0, internal.emails.sendInviteEmail, {
+        recipientEmail: email,
+        senderName: args.senderName || "",
+        familyName: args.familyName || "Family",
+        inviteCode: token,
+        inviteUrl: `https://family-expense-tracker.netlify.app?invite-token=${token}`,
+        expiryDays: 7,
+      });
+      return token;
+    } else {
+      await ctx.scheduler.runAfter(0, internal.emails.sendInviteEmail, {
+        recipientEmail: email,
+        senderName: args.senderName || "",
+        familyName: args.familyName || "Family",
+        inviteCode: existingInvitation.token,
+        inviteUrl: `https://family-expense-tracker.netlify.app?invite-token=${existingInvitation.token}`,
+        expiryDays: 7,
+      });
+      return existingInvitation.token;
     }
-
-    // Schedule the invite email to be sent
-    await ctx.scheduler.runAfter(0, internal.emails.sendInviteEmail, {
-      recipientEmail: email,
-      senderName: args.senderName || "",
-      familyName: args.familyName || "Family",
-      inviteCode: token,
-      inviteUrl: `https://family-expense-tracker.netlify.app?invite-token=${token}`,
-      expiryDays: 7,
-    });
-
-    return token;
   },
 });
 
