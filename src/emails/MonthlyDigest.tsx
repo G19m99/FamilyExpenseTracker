@@ -10,6 +10,8 @@ import {
   Preview,
   Section,
   Text,
+  Row,
+  Column,
 } from "@react-email/components";
 
 interface Expense {
@@ -131,277 +133,316 @@ const MonthlyDigest = ({
               width: "100%",
             }}
           >
-            <div style={{ textAlign: "center" }}>
-              <div
-                style={{
-                  margin: "0 auto 16px auto",
-                  width: "64px",
-                  height: "64px",
-                  backgroundColor: "#000000",
-                  borderRadius: "50%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Text style={{ fontSize: "24px", margin: "0" }}>
-                  <Img
-                    src={`${baseUrl}/wallet.png`}
-                    alt="FamilyTracker"
-                    width="32"
-                    height="32"
-                  />
+            <Row>
+              <Column align="center">
+                <table
+                  align="center"
+                  style={{
+                    margin: "0 auto 16px auto",
+                    width: "64px",
+                    height: "64px",
+                    backgroundColor: "#000000",
+                    borderRadius: "50%",
+                  }}
+                >
+                  <tr>
+                    <td
+                      align="center"
+                      valign="middle"
+                      style={{ height: "64px" }}
+                    >
+                      <Img
+                        src={`${baseUrl}/wallet.png`}
+                        alt="FamilyTracker"
+                        width="32"
+                        height="32"
+                      />
+                    </td>
+                  </tr>
+                </table>
+                <Heading
+                  style={{
+                    fontSize: "24px",
+                    fontWeight: "bold",
+                    color: "#000000",
+                    margin: "0 0 8px 0",
+                    textAlign: "center",
+                  }}
+                >
+                  FamilyTracker
+                </Heading>
+                <Text
+                  style={{ color: "#4b5563", margin: "0", textAlign: "center" }}
+                >
+                  Track expenses together, plan better
                 </Text>
-              </div>
-              <Heading
-                style={{
-                  fontSize: "24px",
-                  fontWeight: "bold",
-                  color: "#000000",
-                  margin: "0 0 8px 0",
-                }}
-              >
-                FamilyTracker
-              </Heading>
-              <Text style={{ color: "#4b5563", margin: "0" }}>
-                Track expenses together, plan better
-              </Text>
-            </div>
+              </Column>
+            </Row>
           </Section>
 
           {/* Dark Section with Monthly Summary */}
           <Section style={{ backgroundColor: "#000000", padding: "32px" }}>
             {/* Monthly Summary Header */}
-            <div style={{ textAlign: "left", marginBottom: "32px" }}>
-              <Text
-                style={{
-                  fontSize: "18px",
-                  fontWeight: "500",
-                  color: "#ffffff",
-                  margin: "0 0 16px 0",
-                }}
-              >
-                Your {month} {year} Family Expense Summary
-              </Text>
-              <Text
-                style={{ color: "#d1d5db", margin: "0", lineHeight: "1.6" }}
-              >
-                Here's a comprehensive overview of your family's spending
-                patterns for {month} {year}.
-              </Text>
-            </div>
+            <Row style={{ marginBottom: "32px" }}>
+              <Column>
+                <Text
+                  style={{
+                    fontSize: "18px",
+                    fontWeight: "500",
+                    color: "#ffffff",
+                    margin: "0 0 16px 0",
+                  }}
+                >
+                  Your {month} {year} Family Expense Summary
+                </Text>
+                <Text
+                  style={{ color: "#d1d5db", margin: "0", lineHeight: "1.6" }}
+                >
+                  Here's a comprehensive overview of your family's spending
+                  patterns for {month} {year}.
+                </Text>
+              </Column>
+            </Row>
 
             {/* Total Spending Overview Card */}
-            <div
+            <Section
               style={{
                 backgroundColor: "#374151",
                 borderRadius: "16px",
                 padding: "32px",
-                textAlign: "center",
                 marginBottom: "32px",
               }}
             >
-              <Text
-                style={{
-                  color: "#d1d5db",
-                  margin: "0 0 8px 0",
-                  fontSize: "18px",
-                }}
-              >
-                Total Spent This Month
-              </Text>
-              <Heading
-                style={{
-                  fontSize: "36px",
-                  fontWeight: "bold",
-                  color: "#ffffff",
-                  margin: "0 0 12px 0",
-                }}
-              >
-                {formatCurrency(totalSpent)}
-              </Heading>
-              {previousMonthTotal && (
-                <Text style={{ color: "#9ca3af", margin: "0" }}>
-                  {formatPercentage(totalSpent, previousMonthTotal)} from{" "}
-                  {month === "January"
-                    ? "December"
-                    : month === "February"
-                      ? "January"
-                      : "previous month"}
-                </Text>
-              )}
-            </div>
+              <Row>
+                <Column align="center">
+                  <Text
+                    style={{
+                      color: "#d1d5db",
+                      margin: "0 0 8px 0",
+                      fontSize: "18px",
+                      textAlign: "center",
+                    }}
+                  >
+                    Total Spent This Month
+                  </Text>
+                  <Heading
+                    style={{
+                      fontSize: "36px",
+                      fontWeight: "bold",
+                      color: "#ffffff",
+                      margin: "0 0 12px 0",
+                      textAlign: "center",
+                    }}
+                  >
+                    {formatCurrency(totalSpent)}
+                  </Heading>
+                  {previousMonthTotal && (
+                    <Text
+                      style={{
+                        color: "#9ca3af",
+                        margin: "0",
+                        textAlign: "center",
+                      }}
+                    >
+                      {formatPercentage(totalSpent, previousMonthTotal)} from{" "}
+                      {month === "January"
+                        ? "December"
+                        : month === "February"
+                          ? "January"
+                          : "previous month"}
+                    </Text>
+                  )}
+                </Column>
+              </Row>
+            </Section>
 
             {/* Category Breakdown */}
-            <div style={{ marginBottom: "32px" }}>
-              <Text
-                style={{
-                  color: "#ffffff",
-                  fontSize: "18px",
-                  fontWeight: "500",
-                  margin: "0 0 24px 0",
-                }}
-              >
-                Spending by Category
-              </Text>
-              <div>
+            <Row style={{ marginBottom: "32px" }}>
+              <Column>
+                <Text
+                  style={{
+                    color: "#ffffff",
+                    fontSize: "18px",
+                    fontWeight: "500",
+                    margin: "0 0 24px 0",
+                  }}
+                >
+                  Spending by Category
+                </Text>
                 {categories.map((category, index) => (
-                  <div
+                  <Section
                     key={category.category}
                     style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
                       padding: "16px",
                       backgroundColor: "#374151",
                       borderRadius: "12px",
                       marginBottom: "12px",
                     }}
                   >
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <div
+                    <Row>
+                      <Column
+                        width="20"
                         style={{
-                          width: "16px",
-                          height: "16px",
-                          borderRadius: "50%",
-                          backgroundColor: getCategoryColor(index),
-                          marginRight: "12px",
-                        }}
-                      ></div>
-                      <Text
-                        style={{
-                          color: "#d1d5db",
-                          margin: "0",
-                          fontWeight: "500",
+                          verticalAlign: "middle",
+                          paddingRight: "12px",
                         }}
                       >
-                        {category.category || "Uncategorized"}
-                      </Text>
-                    </div>
-                    <div style={{ textAlign: "right" }}>
-                      <Text
-                        style={{
-                          color: "#ffffff",
-                          margin: "0",
-                          fontWeight: "600",
-                        }}
-                      >
-                        {formatCurrency(category.amount)}
-                      </Text>
-                      <Text
-                        style={{
-                          color: "#9ca3af",
-                          margin: "0",
-                          fontSize: "14px",
-                        }}
-                      >
-                        {category.percentage.toFixed(1)}%
-                      </Text>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Top Contributors */}
-            <div style={{ marginBottom: "32px" }}>
-              <Text
-                style={{
-                  color: "#ffffff",
-                  fontSize: "18px",
-                  fontWeight: "500",
-                  margin: "0 0 24px 0",
-                }}
-              >
-                Top Contributors
-              </Text>
-              <div>
-                {contributors.map((contributor, index) => (
-                  <div
-                    key={contributor.userId}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      padding: "16px",
-                      backgroundColor: "#374151",
-                      borderRadius: "12px",
-                      marginBottom: "12px",
-                    }}
-                  >
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <div
-                        style={{
-                          width: "32px",
-                          height: "32px",
-                          backgroundColor: "#4b5563",
-                          borderRadius: "50%",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          marginRight: "12px",
-                        }}
-                      >
+                        <div
+                          style={{
+                            width: "16px",
+                            height: "16px",
+                            borderRadius: "50%",
+                            backgroundColor: getCategoryColor(index),
+                          }}
+                        ></div>
+                      </Column>
+                      <Column style={{ verticalAlign: "middle" }}>
                         <Text
                           style={{
                             color: "#d1d5db",
                             margin: "0",
-                            fontWeight: "600",
-                            fontSize: "14px",
-                            lineHeight: "1",
+                            fontWeight: "500",
                           }}
                         >
-                          {contributor.userName.charAt(0).toUpperCase()}
+                          {category.category || "Uncategorized"}
                         </Text>
-                      </div>
-                      <Text
-                        style={{
-                          color: "#d1d5db",
-                          margin: "0",
-                          fontWeight: "500",
-                        }}
-                      >
-                        {contributor.userName}
-                      </Text>
-                    </div>
-                    <div style={{ textAlign: "right" }}>
-                      <Text
-                        style={{
-                          color: "#ffffff",
-                          margin: "0",
-                          fontWeight: "600",
-                        }}
-                      >
-                        {formatCurrency(contributor.totalSpent)}
-                      </Text>
-                      <Text
-                        style={{
-                          color: "#9ca3af",
-                          margin: "0",
-                          fontSize: "14px",
-                        }}
-                      >
-                        {contributor.percentage.toFixed(1)}%
-                      </Text>
-                    </div>
-                  </div>
+                      </Column>
+                      <Column align="right" style={{ verticalAlign: "middle" }}>
+                        <Text
+                          style={{
+                            color: "#ffffff",
+                            margin: "0 0 4px 0",
+                            fontWeight: "600",
+                          }}
+                        >
+                          {formatCurrency(category.amount)}
+                        </Text>
+                        <Text
+                          style={{
+                            color: "#9ca3af",
+                            margin: "0",
+                            fontSize: "14px",
+                          }}
+                        >
+                          {category.percentage.toFixed(1)}%
+                        </Text>
+                      </Column>
+                    </Row>
+                  </Section>
                 ))}
-              </div>
-            </div>
+              </Column>
+            </Row>
+
+            {/* Top Contributors */}
+            <Row style={{ marginBottom: "32px" }}>
+              <Column>
+                <Text
+                  style={{
+                    color: "#ffffff",
+                    fontSize: "18px",
+                    fontWeight: "500",
+                    margin: "0 0 24px 0",
+                  }}
+                >
+                  Top Contributors
+                </Text>
+                {contributors.map((contributor, index) => (
+                  <Section
+                    key={contributor.userId}
+                    style={{
+                      padding: "16px",
+                      backgroundColor: "#374151",
+                      borderRadius: "12px",
+                      marginBottom: "12px",
+                    }}
+                  >
+                    <Row>
+                      <Column
+                        width="50"
+                        style={{
+                          verticalAlign: "middle",
+                          paddingRight: "12px",
+                        }}
+                      >
+                        <table
+                          style={{
+                            width: "32px",
+                            height: "32px",
+                            backgroundColor: "#4b5563",
+                            borderRadius: "50%",
+                          }}
+                        >
+                          <tr>
+                            <td
+                              align="center"
+                              valign="middle"
+                              style={{ height: "32px" }}
+                            >
+                              <Text
+                                style={{
+                                  color: "#d1d5db",
+                                  margin: "0",
+                                  fontWeight: "600",
+                                  fontSize: "14px",
+                                  lineHeight: "1",
+                                }}
+                              >
+                                {contributor.userName.charAt(0).toUpperCase()}
+                              </Text>
+                            </td>
+                          </tr>
+                        </table>
+                      </Column>
+                      <Column style={{ verticalAlign: "middle" }}>
+                        <Text
+                          style={{
+                            color: "#d1d5db",
+                            margin: "0",
+                            fontWeight: "500",
+                          }}
+                        >
+                          {contributor.userName}
+                        </Text>
+                      </Column>
+                      <Column align="right" style={{ verticalAlign: "middle" }}>
+                        <Text
+                          style={{
+                            color: "#ffffff",
+                            margin: "0 0 4px 0",
+                            fontWeight: "600",
+                          }}
+                        >
+                          {formatCurrency(contributor.totalSpent)}
+                        </Text>
+                        <Text
+                          style={{
+                            color: "#9ca3af",
+                            margin: "0",
+                            fontSize: "14px",
+                          }}
+                        >
+                          {contributor.percentage.toFixed(1)}%
+                        </Text>
+                      </Column>
+                    </Row>
+                  </Section>
+                ))}
+              </Column>
+            </Row>
 
             {/* Notable Expenses */}
-            <div style={{ marginBottom: "32px" }}>
-              <Text
-                style={{
-                  color: "#ffffff",
-                  fontSize: "18px",
-                  fontWeight: "500",
-                  margin: "0 0 24px 0",
-                }}
-              >
-                Notable Expenses
-              </Text>
-              <div>
+            <Row style={{ marginBottom: "32px" }}>
+              <Column>
+                <Text
+                  style={{
+                    color: "#ffffff",
+                    fontSize: "18px",
+                    fontWeight: "500",
+                    margin: "0 0 24px 0",
+                  }}
+                >
+                  Notable Expenses
+                </Text>
                 {notableExpenses.map((expense) => {
                   const user = users.find((u) => u._id === expense.createdBy);
                   const date = new Date(expense.date);
@@ -411,7 +452,7 @@ const MonthlyDigest = ({
                   });
 
                   return (
-                    <div
+                    <Section
                       key={expense._id}
                       style={{
                         padding: "16px",
@@ -420,69 +461,85 @@ const MonthlyDigest = ({
                         marginBottom: "12px",
                       }}
                     >
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          marginBottom: "8px",
-                        }}
-                      >
-                        <Text
-                          style={{
-                            color: "#d1d5db",
-                            margin: "0",
-                            fontWeight: "600",
-                          }}
-                        >
-                          {expense.description}
-                        </Text>
-                        <Text
-                          style={{
-                            color: "#ffffff",
-                            margin: "0",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          {formatCurrency(expense.amount)}
-                        </Text>
-                      </div>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          fontSize: "14px",
-                        }}
-                      >
-                        <Text style={{ color: "#9ca3af", margin: "0" }}>
-                          {formattedDate} • {user?.name || "Unknown"}
-                        </Text>
-                        {expense.category && (
-                          <Text style={{ color: "#6b7280", margin: "0" }}>
-                            {expense.category}
+                      <Row style={{ marginBottom: "8px" }}>
+                        <Column style={{ verticalAlign: "middle" }}>
+                          <Text
+                            style={{
+                              color: "#d1d5db",
+                              margin: "0",
+                              fontWeight: "600",
+                            }}
+                          >
+                            {expense.description}
                           </Text>
-                        )}
-                      </div>
-                      {expense.notes && (
-                        <Text
-                          style={{
-                            color: "#9ca3af",
-                            margin: "8px 0 0 0",
-                            fontSize: "14px",
-                          }}
+                        </Column>
+                        <Column
+                          align="right"
+                          style={{ verticalAlign: "middle" }}
                         >
-                          {expense.notes}
-                        </Text>
+                          <Text
+                            style={{
+                              color: "#ffffff",
+                              margin: "0",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {formatCurrency(expense.amount)}
+                          </Text>
+                        </Column>
+                      </Row>
+                      <Row>
+                        <Column style={{ verticalAlign: "middle" }}>
+                          <Text
+                            style={{
+                              color: "#9ca3af",
+                              margin: "0",
+                              fontSize: "14px",
+                            }}
+                          >
+                            {formattedDate} • {user?.name || "Unknown"}
+                          </Text>
+                        </Column>
+                        <Column
+                          align="right"
+                          style={{ verticalAlign: "middle" }}
+                        >
+                          {expense.category && (
+                            <Text
+                              style={{
+                                color: "#6b7280",
+                                margin: "0",
+                                fontSize: "14px",
+                              }}
+                            >
+                              {expense.category}
+                            </Text>
+                          )}
+                        </Column>
+                      </Row>
+                      {expense.notes && (
+                        <Row>
+                          <Column>
+                            <Text
+                              style={{
+                                color: "#9ca3af",
+                                margin: "8px 0 0 0",
+                                fontSize: "14px",
+                              }}
+                            >
+                              {expense.notes}
+                            </Text>
+                          </Column>
+                        </Row>
                       )}
-                    </div>
+                    </Section>
                   );
                 })}
-              </div>
-            </div>
+              </Column>
+            </Row>
 
             {/* Roadmap Section (Future Feature) */}
-            <div
+            <Section
               style={{
                 backgroundColor: "#374151",
                 border: "1px solid #4b5563",
@@ -491,66 +548,84 @@ const MonthlyDigest = ({
                 marginBottom: "32px",
               }}
             >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginBottom: "12px",
-                }}
-              >
-                <Img
-                  src={`${baseUrl}/star.png`}
-                  alt="FamilyTracker"
-                  width="16"
-                  height="16"
-                  style={{ marginRight: "8px" }}
-                />
-                <Text
-                  style={{ color: "#fbbf24", margin: "0", fontWeight: "600" }}
-                >
-                  Coming Soon: Budget Tracking
-                </Text>
-              </div>
-              <Text style={{ color: "#9ca3af", margin: "0", fontSize: "14px" }}>
-                We're working on budget features to help you stay on track with
-                your family's financial goals.
-              </Text>
-            </div>
+              <Row style={{ marginBottom: "12px" }}>
+                <Column>
+                  <table>
+                    <tr>
+                      <td
+                        style={{ verticalAlign: "middle", paddingRight: "8px" }}
+                      >
+                        <Img
+                          src={`${baseUrl}/star.png`}
+                          alt="FamilyTracker"
+                          width="16"
+                          height="16"
+                        />
+                      </td>
+                      <td style={{ verticalAlign: "middle" }}>
+                        <Text
+                          style={{
+                            color: "#fbbf24",
+                            margin: "0",
+                            fontWeight: "600",
+                          }}
+                        >
+                          Coming Soon: Budget Tracking
+                        </Text>
+                      </td>
+                    </tr>
+                  </table>
+                </Column>
+              </Row>
+              <Row>
+                <Column>
+                  <Text
+                    style={{ color: "#9ca3af", margin: "0", fontSize: "14px" }}
+                  >
+                    We're working on budget features to help you stay on track
+                    with your family's financial goals.
+                  </Text>
+                </Column>
+              </Row>
+            </Section>
 
             {/* Call to Action */}
-            <div style={{ textAlign: "center" }}>
-              <Button
-                href={appUrl}
-                style={{
-                  backgroundColor: "#ffffff",
-                  color: "#000000",
-                  padding: "16px 32px",
-                  borderRadius: "9999px",
-                  fontWeight: "500",
-                  fontSize: "16px",
-                  display: "inline-block",
-                  textDecoration: "none",
-                  border: "none",
-                }}
-              >
-                View Full Report →
-              </Button>
-              <Text
-                style={{
-                  color: "#9ca3af",
-                  fontSize: "14px",
-                  margin: "16px 0 0 0",
-                }}
-              >
-                Want to change your email preferences?{" "}
-                <Link
-                  href={`${appUrl}/settings`}
-                  style={{ color: "#ffffff", textDecoration: "underline" }}
+            <Row>
+              <Column align="center">
+                <Button
+                  href={appUrl}
+                  style={{
+                    backgroundColor: "#ffffff",
+                    color: "#000000",
+                    padding: "16px 32px",
+                    borderRadius: "9999px",
+                    fontWeight: "500",
+                    fontSize: "16px",
+                    display: "inline-block",
+                    textDecoration: "none",
+                    border: "none",
+                  }}
                 >
-                  Update settings
-                </Link>
-              </Text>
-            </div>
+                  View Full Report →
+                </Button>
+                <Text
+                  style={{
+                    color: "#9ca3af",
+                    fontSize: "14px",
+                    margin: "16px 0 0 0",
+                    textAlign: "center",
+                  }}
+                >
+                  Want to change your email preferences?{" "}
+                  <Link
+                    href={`${appUrl}/settings`}
+                    style={{ color: "#ffffff", textDecoration: "underline" }}
+                  >
+                    Update settings
+                  </Link>
+                </Text>
+              </Column>
+            </Row>
           </Section>
 
           {/* Footer */}
@@ -576,33 +651,44 @@ const MonthlyDigest = ({
                 gershymenzer@gmail.com
               </Link>
             </Text>
-            <Text
-              style={{
-                color: "#6b7280",
-                fontSize: "14px",
-                margin: "0 0 16px 0",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#6b7280"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                style={{ marginRight: "4px" }}
-              >
-                <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" />
-                <rect x="2" y="4" width="20" height="16" rx="2" />
-              </svg>
-              FamilyTracker, Inc. • 17 Shefa Chaim Ave • Lakewood, NJ 08701
-            </Text>
+            <Row style={{ marginBottom: "16px" }}>
+              <Column align="center">
+                <table align="center">
+                  <tr>
+                    <td
+                      style={{ verticalAlign: "middle", paddingRight: "4px" }}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="12"
+                        height="12"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#6b7280"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" />
+                        <rect x="2" y="4" width="20" height="16" rx="2" />
+                      </svg>
+                    </td>
+                    <td style={{ verticalAlign: "middle" }}>
+                      <Text
+                        style={{
+                          color: "#6b7280",
+                          fontSize: "14px",
+                          margin: "0",
+                        }}
+                      >
+                        FamilyTracker, Inc. • 17 Shefa Chaim Ave • Lakewood, NJ
+                        08701
+                      </Text>
+                    </td>
+                  </tr>
+                </table>
+              </Column>
+            </Row>
             <Text style={{ color: "#6b7280", fontSize: "12px", margin: "0" }}>
               <Link
                 href="#"
