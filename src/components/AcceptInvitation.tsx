@@ -14,6 +14,15 @@ export function AcceptInvitation({ token }: AcceptInvitationProps) {
   const acceptInvitation = useMutation(api.invitations.acceptInvitation);
   const [isAccepting, setIsAccepting] = useState(false);
 
+  const clearPendingInvitation = () => {
+    localStorage.removeItem("pendingInvitationToken");
+    // Clear the token from URL if it exists
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has("invite-token")) {
+      window.history.replaceState({}, document.title, "/");
+    }
+  };
+
   const handleAccept = async () => {
     if (!loggedInUser) return;
 
@@ -21,12 +30,13 @@ export function AcceptInvitation({ token }: AcceptInvitationProps) {
     try {
       await acceptInvitation({ token });
       toast.success("Successfully joined the family!");
-      // Clear the token from URL
-      window.history.replaceState({}, document.title, "/");
+      clearPendingInvitation();
+      window.location.reload();
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Failed to accept invitation"
       );
+      clearPendingInvitation();
     } finally {
       setIsAccepting(false);
     }
@@ -41,6 +51,7 @@ export function AcceptInvitation({ token }: AcceptInvitationProps) {
   }
 
   if (!invitation) {
+    clearPendingInvitation();
     return (
       <div className="max-w-md mx-auto mt-8">
         <div className="card p-6 text-center">
@@ -72,6 +83,7 @@ export function AcceptInvitation({ token }: AcceptInvitationProps) {
   }
 
   if (loggedInUser.email !== invitation.email) {
+    clearPendingInvitation();
     return (
       <div className="max-w-md mx-auto mt-8">
         <div className="card p-6 text-center">

@@ -14,6 +14,21 @@ import { Button } from "./components/ui/button";
 export function SignInForm() {
   const { signIn } = useAuthActions();
 
+  const handleSignIn = async () => {
+    // Check if there's an invitation token in the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const invitationToken = urlParams.get("invite-token");
+
+    // Store the invitation token in localStorage if it exists
+    // This preserves the token through the OAuth redirect flow
+    if (invitationToken) {
+      localStorage.setItem("pendingInvitationToken", invitationToken);
+    }
+
+    // Proceed with sign in
+    await signIn("google");
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-linear-to-br from-background to-muted/20">
       <motion.div
@@ -47,7 +62,7 @@ export function SignInForm() {
               className="w-full h-12 text-base font-medium rounded-2xl"
               variant="outline"
               type="button"
-              onClick={() => void signIn("google")}
+              onClick={() => void handleSignIn()}
             >
               <GoogleLogo className="mr-2 h-4 w-4" /> Continue with Google
             </Button>

@@ -30,9 +30,11 @@ export default function App() {
     }
   };
 
-  // Check for invitation token in URL
+  // Check for invitation token in URL or localStorage
   const urlParams = new URLSearchParams(window.location.search);
-  const invitationToken = urlParams.get("invite-token");
+  const urlToken = urlParams.get("invite-token");
+  const storedToken = localStorage.getItem("pendingInvitationToken");
+  const invitationToken = urlToken || storedToken;
 
   if (invitationToken) {
     return (
@@ -108,6 +110,13 @@ export default function App() {
 function Content() {
   const loggedInUser = useQuery(api.auth.loggedInUser);
   const userFamily = useQuery(api.families.getCurrentUserFamily);
+
+  // Clear any stale invitation tokens if user is authenticated and no invitation is being processed
+  useEffect(() => {
+    if (loggedInUser && !window.location.search.includes("invite-token")) {
+      localStorage.removeItem("pendingInvitationToken");
+    }
+  }, [loggedInUser]);
 
   if (loggedInUser === undefined || userFamily === undefined) {
     return (
