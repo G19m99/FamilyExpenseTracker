@@ -99,6 +99,11 @@ const MonthlyDigest = ({
 }: MonthlyDigestProps) => {
   const previewText = `Your ${month} ${year} family expense summary - ${formatCurrency(totalSpent)} total spent`;
 
+  const baseUrl =
+    process.env.NODE_ENV === "production"
+      ? "https://family-expense-tracker.netlify.app"
+      : "/static";
+
   return (
     <Html>
       <Head />
@@ -141,7 +146,7 @@ const MonthlyDigest = ({
               >
                 <Text style={{ fontSize: "24px", margin: "0" }}>
                   <Img
-                    src={"/static/wallet.png"}
+                    src={`${baseUrl}/wallet.png`}
                     alt="FamilyTracker"
                     width="32"
                     height="32"
@@ -494,7 +499,7 @@ const MonthlyDigest = ({
                 }}
               >
                 <Img
-                  src={"/static/star.png"}
+                  src={`${baseUrl}/star.png`}
                   alt="FamilyTracker"
                   width="16"
                   height="16"

@@ -33,8 +33,8 @@ export const InviteEmail = ({
 
   const baseUrl =
     process.env.NODE_ENV === "production"
-      ? "https://family-expense-tracker.netlify.app/"
-      : "";
+      ? "https://family-expense-tracker.netlify.app"
+      : "/static";
 
   return (
     <Html>
@@ -78,7 +78,7 @@ export const InviteEmail = ({
               >
                 <Text style={{ fontSize: "24px", margin: "0" }}>
                   <Img
-                    src={"/static/wallet.png"}
+                    src={`${baseUrl}/wallet.png`}
                     alt="FamilyTracker"
                     width="32"
                     height="32"
@@ -150,7 +150,7 @@ export const InviteEmail = ({
               >
                 <Text style={{ fontSize: "20px", margin: "0" }}>
                   <Img
-                    src={"/static/persons.png"}
+                    src={`${baseUrl}/persons.png`}
                     alt="FamilyTracker"
                     width="32"
                     height="32"
@@ -353,7 +353,7 @@ export const InviteEmail = ({
               }}
             >
               <Img
-                src={"/static/mail.png"}
+                src={`${baseUrl}/mail.png`}
                 alt="FamilyTracker"
                 width="12"
                 height="12"
