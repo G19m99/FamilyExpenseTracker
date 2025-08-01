@@ -36,7 +36,7 @@ export const sendInviteEmail = internalAction({
     );
 
     const id = await resend.sendEmail(ctx, {
-      from: "Family Tracker <noreply@support.surplustonerinc.com>",
+      from: `Family Tracker <${process.env.SENDER_EMAIL}>`,
       to: args.recipientEmail,
       subject: `${args.senderName} invited you to join ${args.familyName} on FamilyTracker`,
       html: emailHtml,
@@ -137,7 +137,7 @@ export const sendMonthlyDigestEmail = internalAction({
 
     // Send the email
     const id = await resend.sendEmail(ctx, {
-      from: "FamilyTracker <noreply@support.surplustonerinc.com>",
+      from: `Family Tracker <${process.env.SENDER_EMAIL}>`,
       to: args.recipientEmail,
       subject: `Your ${args.monthName} ${args.year} Family Expense Summary - ${formatCurrency(args.digestData.totalSpent)}`,
       html: emailHtml,
