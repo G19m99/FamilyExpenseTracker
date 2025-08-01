@@ -5,10 +5,10 @@ import {
   Head,
   Heading,
   Html,
+  Img,
   Link,
   Preview,
   Section,
-  Tailwind,
   Text,
 } from "@react-email/components";
 
@@ -31,201 +31,362 @@ export const InviteEmail = ({
 }: InviteEmailProps) => {
   const previewText = `${senderName} invited you to join ${familyName} on FamilyTracker`;
 
+  const baseUrl =
+    process.env.NODE_ENV === "production"
+      ? "https://family-expense-tracker.netlify.app/"
+      : "";
+
   return (
-    <Tailwind>
-      <Html>
-        <Head />
-        <Preview>{previewText}</Preview>
-        <Body className="bg-black font-sans">
-          <Container className="mx-auto max-w-2xl bg-black">
-            {/* Light Header Section - App Branding Only */}
-            <Section className="bg-gray-50 px-8 py-8 rounded-t-2xl w-full">
-              <div className="text-center">
-                <div className="mx-auto w-16 h-16 bg-black rounded-full flex items-center justify-center mb-4">
-                  <Text className="text-2xl m-0">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      className="lucide lucide-wallet-icon lucide-wallet h-8 w-8 text-white"
-                    >
-                      <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1" />
-                      <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" />
-                    </svg>
-                  </Text>
-                </div>
-                <Heading className="text-2xl font-bold text-black m-0 mb-2">
-                  FamilyTracker
-                </Heading>
-                <Text className="text-gray-600 m-0">
-                  Track expenses together, plan better
+    <Html>
+      <Head />
+      <Preview>{previewText}</Preview>
+      <Body
+        style={{
+          backgroundColor: "#000000",
+          fontFamily: "sans-serif",
+          margin: "0",
+          padding: "0",
+        }}
+      >
+        <Container
+          style={{
+            margin: "0 auto",
+            maxWidth: "672px",
+            backgroundColor: "#000000",
+          }}
+        >
+          {/* Light Header Section - App Branding Only */}
+          <Section
+            style={{
+              backgroundColor: "#f9fafb",
+              padding: "32px",
+              width: "100%",
+            }}
+          >
+            <div style={{ textAlign: "center" }}>
+              <div
+                style={{
+                  margin: "0 auto 16px auto",
+                  width: "64px",
+                  height: "64px",
+                  backgroundColor: "#000000",
+                  borderRadius: "50%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Text style={{ fontSize: "24px", margin: "0" }}>
+                  <Img
+                    src={"/static/wallet.png"}
+                    alt="FamilyTracker"
+                    width="32"
+                    height="32"
+                  />
                 </Text>
               </div>
-            </Section>
+              <Heading
+                style={{
+                  fontSize: "24px",
+                  fontWeight: "bold",
+                  color: "#000000",
+                  margin: "0 0 8px 0",
+                }}
+              >
+                FamilyTracker
+              </Heading>
+              <Text style={{ color: "#4b5563", margin: "0" }}>
+                Track expenses together, plan better
+              </Text>
+            </div>
+          </Section>
 
-            {/* Dark Section with Personal Greeting and Invitation Card */}
-            <Section className="bg-black px-8 py-8">
-              {/* Personal Greeting */}
-              <div className="text-left mb-8">
-                <Text className="text-lg font-medium text-white m-0 mb-4">
-                  Hi {recipientName},
-                </Text>
-                <Text className="text-gray-300 m-0 leading-relaxed">
-                  <strong className="text-white">{senderName}</strong> has
-                  invited you to join{" "}
-                  <strong className="text-white">{familyName}</strong> on
-                  FamilyTracker, a shared expense tracking app for families.
+          {/* Dark Section with Personal Greeting and Invitation Card */}
+          <Section style={{ backgroundColor: "#000000", padding: "32px" }}>
+            {/* Personal Greeting */}
+            <div style={{ textAlign: "left", marginBottom: "32px" }}>
+              <Text
+                style={{
+                  fontSize: "18px",
+                  fontWeight: "500",
+                  color: "#ffffff",
+                  margin: "0 0 16px 0",
+                }}
+              >
+                Hi {recipientName},
+              </Text>
+              <Text
+                style={{ color: "#d1d5db", margin: "0", lineHeight: "1.6" }}
+              >
+                <strong style={{ color: "#ffffff" }}>{senderName}</strong> has
+                invited you to join{" "}
+                <strong style={{ color: "#ffffff" }}>{familyName}</strong> on
+                FamilyTracker, a shared expense tracking app for families.
+              </Text>
+            </div>
+
+            {/* Dark Invitation Card */}
+            <div
+              style={{
+                backgroundColor: "#374151",
+                borderRadius: "16px",
+                padding: "32px",
+                textAlign: "center",
+                marginBottom: "32px",
+              }}
+            >
+              {/* Users Icon */}
+              <div
+                style={{
+                  margin: "0 auto 24px auto",
+                  width: "48px",
+                  height: "48px",
+                  backgroundColor: "#4b5563",
+                  borderRadius: "50%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Text style={{ fontSize: "20px", margin: "0" }}>
+                  <Img
+                    src={"/static/persons.png"}
+                    alt="FamilyTracker"
+                    width="32"
+                    height="32"
+                  />
                 </Text>
               </div>
 
-              {/* Dark Invitation Card */}
-              <div className="bg-gray-800 rounded-2xl p-8 text-center mb-8">
-                {/* Users Icon */}
-                <div className="mx-auto w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center mb-6">
-                  <Text className="text-xl m-0">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      className="lucide lucide-users-icon lucide-users h-8 w-8"
-                    >
-                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                      <path d="M16 3.128a4 4 0 0 1 0 7.744" />
-                      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                      <circle cx="9" cy="7" r="4" />
-                    </svg>
-                  </Text>
-                </div>
+              <Text
+                style={{
+                  color: "#d1d5db",
+                  fontSize: "16px",
+                  margin: "0 0 8px 0",
+                }}
+              >
+                You've been invited to join
+              </Text>
+              <Heading
+                style={{
+                  color: "#ffffff",
+                  fontSize: "24px",
+                  fontWeight: "bold",
+                  margin: "0 0 16px 0",
+                }}
+              >
+                {familyName}
+              </Heading>
+              <Text
+                style={{
+                  color: "#9ca3af",
+                  fontSize: "14px",
+                  margin: "0",
+                  lineHeight: "1.6",
+                }}
+              >
+                Track and manage expenses together with your family members in
+                one place.
+              </Text>
+            </div>
 
-                <Text className="text-gray-300 text-base m-0 mb-2">
-                  You've been invited to join
-                </Text>
-                <Heading className="text-white text-2xl font-bold m-0 mb-4">
-                  {familyName}
-                </Heading>
-                <Text className="text-gray-400 text-sm m-0 leading-relaxed">
-                  Track and manage expenses together with your family members in
-                  one place.
-                </Text>
-              </div>
-
-              {/* Features List */}
-              <div className="mb-8">
-                <Text className="text-white text-lg font-medium m-0 mb-6">
-                  With FamilyTracker, you can:
-                </Text>
-                <div className="space-y-3">
-                  <Text className="text-gray-300 m-0 flex items-start">
-                    <span className="text-white mr-3">•</span>
-                    Log and track all family expenses in one place
-                  </Text>
-                  <Text className="text-gray-300 m-0 flex items-start">
-                    <span className="text-white mr-3">•</span>
-                    See who spent what and when
-                  </Text>
-                  <Text className="text-gray-300 m-0 flex items-start">
-                    <span className="text-white mr-3">•</span>
-                    Categorize expenses for better budget management
-                  </Text>
-                  <Text className="text-gray-300 m-0 flex items-start">
-                    <span className="text-white mr-3">•</span>
-                    Generate reports and export data to Excel
-                  </Text>
-                  <Text className="text-gray-300 m-0 flex items-start">
-                    <span className="text-white mr-3">•</span>
-                    Plan your family budget together
-                  </Text>
-                </div>
-              </div>
-
-              {/* Call to Action */}
-              <div className="text-center">
-                <Button
-                  href={inviteUrl}
-                  className="bg-white text-black px-8 py-4 rounded-full font-medium text-base inline-block no-underline hover:bg-gray-100"
+            {/* Features List */}
+            <div style={{ marginBottom: "32px" }}>
+              <Text
+                style={{
+                  color: "#ffffff",
+                  fontSize: "18px",
+                  fontWeight: "500",
+                  margin: "0 0 24px 0",
+                }}
+              >
+                With FamilyTracker, you can:
+              </Text>
+              <div>
+                <Text
+                  style={{
+                    color: "#d1d5db",
+                    margin: "0 0 12px 0",
+                    display: "flex",
+                    alignItems: "flex-start",
+                  }}
                 >
-                  Accept Invitation →
-                </Button>
-                <Text className="text-gray-400 text-sm m-0 mt-4">
-                  Or use this invite code:{" "}
-                  <span className="text-white font-mono font-bold">
-                    {inviteCode}
+                  <span style={{ color: "#ffffff", marginRight: "12px" }}>
+                    •
                   </span>
+                  Log and track all family expenses in one place
                 </Text>
-                <Text className="text-gray-500 text-xs m-0 mt-2">
-                  This invitation expires in {expiryDays} days.
+                <Text
+                  style={{
+                    color: "#d1d5db",
+                    margin: "0 0 12px 0",
+                    display: "flex",
+                    alignItems: "flex-start",
+                  }}
+                >
+                  <span style={{ color: "#ffffff", marginRight: "12px" }}>
+                    •
+                  </span>
+                  See who spent what and when
+                </Text>
+                <Text
+                  style={{
+                    color: "#d1d5db",
+                    margin: "0 0 12px 0",
+                    display: "flex",
+                    alignItems: "flex-start",
+                  }}
+                >
+                  <span style={{ color: "#ffffff", marginRight: "12px" }}>
+                    •
+                  </span>
+                  Categorize expenses for better budget management
+                </Text>
+                <Text
+                  style={{
+                    color: "#d1d5db",
+                    margin: "0 0 12px 0",
+                    display: "flex",
+                    alignItems: "flex-start",
+                  }}
+                >
+                  <span style={{ color: "#ffffff", marginRight: "12px" }}>
+                    •
+                  </span>
+                  Generate reports and export data to Excel
+                </Text>
+                <Text
+                  style={{
+                    color: "#d1d5db",
+                    margin: "0",
+                    display: "flex",
+                    alignItems: "flex-start",
+                  }}
+                >
+                  <span style={{ color: "#ffffff", marginRight: "12px" }}>
+                    •
+                  </span>
+                  Plan your family budget together
                 </Text>
               </div>
-            </Section>
+            </div>
 
-            {/* Footer */}
-            <Section className="bg-gray-800 px-8 py-6 rounded-b-2xl text-center">
-              <Text className="text-gray-400 text-sm m-0 mb-4">
-                If you have any questions, please contact{" "}
-                <Link
-                  href="mailto:support@familytracker.com"
-                  className="text-white underline"
+            {/* Call to Action */}
+            <div style={{ textAlign: "center" }}>
+              <Button
+                href={inviteUrl}
+                style={{
+                  backgroundColor: "#ffffff",
+                  color: "#000000",
+                  padding: "16px 32px",
+                  borderRadius: "9999px",
+                  fontWeight: "500",
+                  fontSize: "16px",
+                  display: "inline-block",
+                  textDecoration: "none",
+                  border: "none",
+                }}
+              >
+                Accept Invitation →
+              </Button>
+              <Text
+                style={{
+                  color: "#9ca3af",
+                  fontSize: "14px",
+                  margin: "16px 0 0 0",
+                }}
+              >
+                Or use this invite code:{" "}
+                <span
+                  style={{
+                    color: "#ffffff",
+                    fontFamily: "monospace",
+                    fontWeight: "bold",
+                  }}
                 >
-                  support@familytracker.com
-                </Link>
+                  {inviteCode}
+                </span>
               </Text>
-              <Text className="text-gray-500 text-sm m-0 mb-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  className="lucide lucide-mail-icon lucide-mail h-3 w-3"
-                >
-                  <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" />
-                  <rect x="2" y="4" width="20" height="16" rx="2" />
-                </svg>{" "}
-                FamilyTracker, Inc. • 17 Shefa Chaim Ave • Lakewood, NJ 08701
+              <Text
+                style={{
+                  color: "#6b7280",
+                  fontSize: "12px",
+                  margin: "8px 0 0 0",
+                }}
+              >
+                This invitation expires in {expiryDays} days.
               </Text>
-              <Text className="text-gray-500 text-xs m-0">
-                <Link
-                  href="#"
-                  className="text-gray-400 underline hover:text-white"
-                >
-                  Unsubscribe
-                </Link>{" "}
-                •{" "}
-                <Link
-                  href="#"
-                  className="text-gray-400 underline hover:text-white"
-                >
-                  Privacy Policy
-                </Link>{" "}
-                •{" "}
-                <Link
-                  href="#"
-                  className="text-gray-400 underline hover:text-white"
-                >
-                  Terms of Service
-                </Link>
-              </Text>
-            </Section>
-          </Container>
-        </Body>
-      </Html>
-    </Tailwind>
+            </div>
+          </Section>
+
+          {/* Footer */}
+          <Section
+            style={{
+              backgroundColor: "#374151",
+              padding: "24px 32px",
+              textAlign: "center",
+            }}
+          >
+            <Text
+              style={{
+                color: "#9ca3af",
+                fontSize: "14px",
+                margin: "0 0 16px 0",
+              }}
+            >
+              If you have any questions, please contact{" "}
+              <Link
+                href="mailto:gershymenzer@gmail.com"
+                style={{ color: "#ffffff", textDecoration: "underline" }}
+              >
+                gershymenzer@gmail.com
+              </Link>
+            </Text>
+            <Text
+              style={{
+                color: "#6b7280",
+                fontSize: "14px",
+                margin: "0 0 16px 0",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Img
+                src={"/static/mail.png"}
+                alt="FamilyTracker"
+                width="12"
+                height="12"
+                style={{ marginRight: "4px" }}
+              />
+              FamilyTracker, Inc. • 17 Shefa Chaim Ave • Lakewood, NJ 08701
+            </Text>
+            <Text style={{ color: "#6b7280", fontSize: "12px", margin: "0" }}>
+              <Link
+                href="#"
+                style={{ color: "#9ca3af", textDecoration: "underline" }}
+              >
+                Unsubscribe
+              </Link>{" "}
+              •{" "}
+              <Link
+                href="#"
+                style={{ color: "#9ca3af", textDecoration: "underline" }}
+              >
+                Privacy Policy
+              </Link>{" "}
+              •{" "}
+              <Link
+                href="#"
+                style={{ color: "#9ca3af", textDecoration: "underline" }}
+              >
+                Terms of Service
+              </Link>
+            </Text>
+          </Section>
+        </Container>
+      </Body>
+    </Html>
   );
 };
 
