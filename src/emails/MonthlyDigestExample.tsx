@@ -140,7 +140,7 @@ const MonthlyDigestExample = () => {
         notes: "Brake replacement and oil change",
       },
     ],
-    appUrl: "https://familytracker.app",
+    appUrl: "https://family-expense-tracker.netlify.app/",
   };
 
   return <MonthlyDigest {...sampleData} />;

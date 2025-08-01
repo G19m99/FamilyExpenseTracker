@@ -131,7 +131,7 @@ export const sendMonthlyDigestEmail = internalAction({
         categories: categoriesWithColors,
         contributors: args.digestData.contributors,
         notableExpenses: args.digestData.notableExpenses,
-        appUrl: args.appUrl || "https://familytracker.app",
+        appUrl: args.appUrl || "https://family-expense-tracker.netlify.app/",
       })
     );
 
